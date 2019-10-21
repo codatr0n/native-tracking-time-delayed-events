@@ -1,0 +1,43 @@
+<!-- sending time delayed events to agency doubleclick server -->
+
+<!-- container for adding img tracker events -->
+<div class="dfp_track"></div>
+
+<script>
+    // tracker codes found in noscript img src - eg.: cat=costu001
+    var tracker_view = 'costu001';
+    var tracker_10sec = 'costu0';
+    var tracker_20sec = 'costu00';
+    var tracker_30sec = 'costu000';
+
+    // networkd id found in noscript part of tag - eg.: https://ad.doubleclick.net/ddm/activity/src=6320918
+    var network_id = '6320918';
+
+    var myVar = setTimeout(function () {
+        ddpTracking(tracker_view);
+        console.log('agency: tracking article load')
+    }, 0); // drop tracker on load
+    setTimeout(function () {
+        ddpTracking(tracker_10sec);
+        console.log('agency: tracking 10 sec read')
+    }, 10000); // drop tracker after 10 sec
+    setTimeout(function () {
+        ddpTracking(tracker_20sec);
+        console.log('agency: tracking 20 sec read')
+    }, 20000); // drop tracker after 20 sec
+    setTimeout(function () {
+        ddpTracking(tracker_30sec);
+        console.log('agency: tracking 30 sec read')
+    }, 30000); // drop tracker after 30 sec
+
+    function ddpTracking(part) {
+        var trk = document.createElement("img");
+        trk.width = "1";
+        trk.height = "1";
+        var axel = Math.random() + "";
+        var a = axel * 10000000000000;
+        trk.src = "https://ad.doubleclick.net/ddm/activity/src=" + network_id + ";type=" + part +
+            ";dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=" + a + "?";
+        document.getElementsByClassName("dfp_track")[0].appendChild(trk);
+    }
+</script>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Tracking events on page for agency</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .input-group {
+            margin: 30px 0px;
+        }
+
+        .input-group-text {
+            min-width: 150px;
+            font-weight: bold;
+        }
+
+
+        .input-group textarea {
+            height: auto;
+            font-family: monospace;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <form action="javascript:generate_script();">
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">View tracker</span>
+                </div>
+                <textarea rows=5 class="form-control" id="tracker_view" aria-label="View tracker"></textarea>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">10 sec tracker</span>
+                </div>
+                <textarea rows=5 class="form-control" id="tracker_10sec" aria-label="10 sec tracker"></textarea>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">20 sec tracker</span>
+                </div>
+                <textarea rows=5 class="form-control" id="tracker_20sec" aria-label="20 sec tracker"></textarea>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">30 sec tracker</span>
+                </div>
+                <textarea rows=5 class="form-control" id="tracker_30sec" aria-label="30 sec tracker"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate script</button>
+
+        </form>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Ready script</span>
+            </div>
+            <textarea rows=30 id="result_script" class="form-control" aria-label="Ready script"></textarea>
+        </div>
+        <button class="btn btn-success" onClick='javascript:copy_to_clipboard();'>Copy code</button>
+
+    </div>
+    <br><br>
+
+    <script>
+        function get_values() {
+            data = {};
+            data.network_id = document.getElementById('tracker_view').value.split('ddm/activity/src=')[1].split(';')[0];
+            data.tracker_view = document.getElementById('tracker_view').value.split('cat=')[1].split(';')[0];
+            data.tracker_10sec = document.getElementById('tracker_10sec').value.split('cat=')[1].split(';')[0];
+            data.tracker_20sec = document.getElementById('tracker_20sec').value.split('cat=')[1].split(';')[0];
+            data.tracker_30sec = document.getElementById('tracker_30sec').value.split('cat=')[1].split(';')[0];
+            data.empty = '';
+            return data;
+        }
+
+        function make_script_markup(data) {
+            var markup = `<div class="dfp_track"></div>
+<script>
+    // tracker codes found in noscript img src - eg.: cat=costu001
+    var tracker_view = '${data.tracker_view}';
+    var tracker_10sec = '${data.tracker_10sec}';
+    var tracker_20sec = '${data.tracker_20sec}';
+    var tracker_30sec = '${data.tracker_30sec}';
+
+    // networkd id found in noscript part of tag - eg.: https://ad.doubleclick.net/ddm/activity/src=6320918
+    var network_id = '${data.network_id}';
+
+    var myVar = setTimeout(function () {
+        ddpTracking(tracker_view);
+        console.log('agency: tracking article load')
+    }, 0); // drop tracker on load
+    setTimeout(function () {
+        ddpTracking(tracker_10sec);
+        console.log('agency: tracking 10 sec read')
+    }, 10000); // drop tracker after 10 sec
+    setTimeout(function () {
+        ddpTracking(tracker_20sec);
+        console.log('agency: tracking 20 sec read')
+    }, 20000); // drop tracker after 20 sec
+    setTimeout(function () {
+        ddpTracking(tracker_30sec);
+        console.log('agency: tracking 30 sec read')
+    }, 30000); // drop tracker after 30 sec
+
+    function ddpTracking(part) {
+        var trk = document.createElement("img");
+        trk.width = "1";
+        trk.height = "1";
+        var axel = Math.random() + "";
+        var a = axel * 10000000000000;
+        trk.src = "https://ad.doubleclick.net/ddm/activity/src=" + network_id + ";type=" + part +
+            ";dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=" + a + "?";
+        document.getElementsByClassName("dfp_track")[0].appendChild(trk);
+    }
+</scri${data.empty}pt>`;
+            return markup;
+        }
+
+        function generate_script() {
+            var result_elm = document.getElementById('result_script');
+            var data = get_values();
+            var markup = make_script_markup(data);
+            result_elm.value = markup;
+            result_elm.scrollIntoView({
+                behavior: 'smooth'
+            })
+        }
+
+        function copy_to_clipboard() {
+            var copyText = document.getElementById("result_script");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert('script copied to clipboard');
+            copyText.blur();
+        }
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
