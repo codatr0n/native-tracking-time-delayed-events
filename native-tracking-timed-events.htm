@@ -27,40 +27,113 @@
             font-family: monospace;
             font-size: 0.8em;
         }
+
+        .input-group textarea::placeholder {
+            color: #ccc;
+
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
+        <h1>Generate 3rd party tracking of Native article reads</h1>
+
+        <p>Add support for 3rd party tracking of unique, 10, 20 and 30 sec views on native articles.<br>
+        This only supports tracking scripts from agencies using <b>Google DCM</b> - example code shown below.</p>
         <form action="javascript:generate_script();">
 
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">View tracker</span>
                 </div>
-                <textarea rows=5 class="form-control" id="tracker_view" aria-label="View tracker"></textarea>
+                <textarea rows=18 class="form-control" id="tracker_view" aria-label="View tracker" placeholder="Example:
+&lt;!--
+Event snippet for Costume_NO_Unique Impressions_True Match on http://costume.no: Please do not remove.
+Place this snippet on pages with events you&rsquo;re tracking. 
+Creation date: 10/01/2019
+--&gt;
+&lt;script&gt;
+  gtag('event', 'conversion', {
+    'allow_custom_scripts': true,
+    'send_to': 'DC-6320918/campa0/costu001+unique'
+  });
+&lt;/script&gt;
+&lt;noscript&gt;
+&lt;img src=&quot;https://ad.doubleclick.net/ddm/activity/src=6320918;type=campa0;cat=costu001;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=1;num=1?&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;&quot;/&gt;
+&lt;/noscript&gt;
+&lt;!-- End of event snippet: Please do not remove --&gt;">
+                </textarea>
             </div>
 
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">10 sec tracker</span>
                 </div>
-                <textarea rows=5 class="form-control" id="tracker_10sec" aria-label="10 sec tracker"></textarea>
+                <textarea rows=18 class="form-control" id="tracker_10sec" aria-label="10 sec tracker" placeholder="Example:
+&lt;!--
+Event snippet for Costume_NO_TOS10_True Match on https://costume.no/: Please do not remove.
+Place this snippet on pages with events you&rsquo;re tracking. 
+Creation date: 10/01/2019
+--&gt;
+&lt;script&gt;
+  gtag('event', 'conversion', {
+    'allow_custom_scripts': true,
+    'session_id': '[SessionID]',
+    'send_to': 'DC-6320918/campa0/costu0+per_session'
+  });
+&lt;/script&gt;
+&lt;noscript&gt;
+&lt;img src=&quot;https://ad.doubleclick.net/ddm/activity/src=6320918;type=campa0;cat=costu0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=[SessionID]?&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;&quot;/&gt;
+&lt;/noscript&gt;
+&lt;!-- End of event snippet: Please do not remove --&gt;"></textarea>
             </div>
 
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">20 sec tracker</span>
                 </div>
-                <textarea rows=5 class="form-control" id="tracker_20sec" aria-label="20 sec tracker"></textarea>
+                <textarea rows=18 class="form-control" id="tracker_20sec" aria-label="20 sec tracker" placeholder="Example:
+&lt;!--
+Event snippet for Costume_NO_TOS20_True Match on https://costume.no/: Please do not remove.
+Place this snippet on pages with events you&rsquo;re tracking. 
+Creation date: 10/01/2019
+--&gt;
+&lt;script&gt;
+  gtag('event', 'conversion', {
+    'allow_custom_scripts': true,
+    'session_id': '[SessionID]',
+    'send_to': 'DC-6320918/campa0/costu00+per_session'
+  });
+&lt;/script&gt;
+&lt;noscript&gt;
+&lt;img src=&quot;https://ad.doubleclick.net/ddm/activity/src=6320918;type=campa0;cat=costu00;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=[SessionID]?&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;&quot;/&gt;
+&lt;/noscript&gt;
+&lt;!-- End of event snippet: Please do not remove --&gt;"></textarea>
             </div>
 
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">30 sec tracker</span>
                 </div>
-                <textarea rows=5 class="form-control" id="tracker_30sec" aria-label="30 sec tracker"></textarea>
+                <textarea rows=18 class="form-control" id="tracker_30sec" aria-label="30 sec tracker" placeholder="Example:
+&lt;!--
+Event snippet for Costume_NO_TOS30_True Match on https://costume.no/: Please do not remove.
+Place this snippet on pages with events you&rsquo;re tracking. 
+Creation date: 10/01/2019
+--&gt;
+&lt;script&gt;
+  gtag('event', 'conversion', {
+    'allow_custom_scripts': true,
+    'session_id': '[SessionID]',
+    'send_to': 'DC-6320918/campa0/costu000+per_session'
+  });
+&lt;/script&gt;
+&lt;noscript&gt;
+&lt;img src=&quot;&quot;https://ad.doubleclick.net/ddm/activity/src=6320918;type=campa0;cat=costu000;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;ord=[SessionID]?&quot;&quot; width=&quot;&quot;1&quot;&quot; height=&quot;&quot;1&quot;&quot; alt=&quot;&quot;&quot;&quot;/&gt;
+&lt;/noscript&gt;
+&lt;!-- End of event snippet: Please do not remove --&gt;"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Generate script</button>
